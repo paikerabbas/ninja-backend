@@ -1,10 +1,10 @@
-package com.ninja.beat;
+package org.ninja;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class NinjaBackendApplicationTests {
+class NinjaApplicationTests {
 
 	@Test
 	void contextLoads() {

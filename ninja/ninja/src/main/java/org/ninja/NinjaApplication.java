@@ -1,13 +1,13 @@
-package com.ninja.beat;
+package org.ninja;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class NinjaBackendApplication {
+public class NinjaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(NinjaBackendApplication.class, args);
+		SpringApplication.run(NinjaApplication.class, args);
 	}
 
 }
