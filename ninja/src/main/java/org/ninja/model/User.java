@@ -2,15 +2,21 @@ package org.ninja.model;
 
 import jakarta.persistence.*;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-@Getter
-@Setter
+import java.util.Collection;
+import java.util.List;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="ninja_user")
-public class User {
+public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -18,28 +24,43 @@ public class User {
 	private String middlename;
 	private String lastname;
 	private String email;
-	private Integer mobile;
+	private String mobile;
 	private String country;
 	private String password;
-
-	protected User() {
-	}
-
-	public User(String firstname, String middlename, String lastname, String email, Integer mobile, String country,
-			String password) {
-		this.firstname = firstname;
-		this.middlename = middlename;
-		this.lastname = lastname;
-		this.email = email;
-		this.mobile = mobile;
-		this.country = country;
-		this.password = password;
+	@Enumerated(EnumType.STRING)
+	private Role role;
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority(role.name()));
 	}
 
 	@Override
-	public String toString() {
-		return "User [id=" + id + ", firstname=" + firstname + ", middlename=" + middlename + ", lastname=" + lastname
-				+ ", email=" + email + ", mobile=" + mobile + ", country=" + country + ", password=" + password + "]";
+	public String getUsername() {
+		return email;
 	}
 
+	@Override
+	public String getPassword(){
+		return password;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }
