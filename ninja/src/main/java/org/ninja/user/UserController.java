@@ -1,24 +1,32 @@
 package org.ninja.user;
 
+import lombok.RequiredArgsConstructor;
+import org.ninja.model.AuthenticationRequest;
+import org.ninja.model.AuthenticationResponse;
+import org.ninja.model.RegisterRequest;
 import org.ninja.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/user")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @PostMapping(value = "/registerUser", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
+    @PostMapping(value = "/register")
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(userService.registerUser(request));
 
-        return new ResponseEntity<>(userService.registerUser(user), HttpStatus.OK);
+    }
 
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
+        return ResponseEntity.ok(userService.authenticate(request));
     }
 
 }
